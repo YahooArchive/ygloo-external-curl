@@ -43,11 +43,11 @@ LOCAL_CFLAGS += -DHAVE_LIBZ -DHAVE_ZLIB_H
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../zlib
 
 # SSL provider
-ifeq ($(YPERSPACE_CONFIG_SSL),openssl)
+ifeq ($(YPERWAVE_CONFIG_SSL),openssl)
 LOCAL_CFLAGS += -DUSE_SSLEAY
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../openssl/include
 endif
-ifeq ($(YPERSPACE_CONFIG_SSL),axtls)
+ifeq ($(YPERWAVE_CONFIG_SSL),axtls)
 LOCAL_CFLAGS += -DUSE_AXTLS
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/crypto
