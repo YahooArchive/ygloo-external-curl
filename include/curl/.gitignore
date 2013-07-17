@@ -1,4 +1,5 @@
-curlbuild.h
+# Allow our generic curl build config to be part of repository
+# curlbuild.h
 stamp-h2
 stamp-h3
 curlver.h.dist
