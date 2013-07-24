@@ -1,0 +1,1 @@
+CURL_CONFIG_SSL:=axtls

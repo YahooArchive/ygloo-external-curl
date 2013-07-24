@@ -1,5 +1,7 @@
 LOCAL_PATH:= $(call my-dir)
 
+include $(LOCAL_PATH)/config.mk
+
 include $(CLEAR_VARS)
 
 CURL_CFLAGS += -DHAVE_CONFIG_H
@@ -43,11 +45,11 @@ LOCAL_CFLAGS += -DHAVE_LIBZ -DHAVE_ZLIB_H
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../zlib
 
 # SSL provider
-ifeq ($(YPERWAVE_CONFIG_SSL),openssl)
+ifeq ($(CURL_CONFIG_SSL),openssl)
 LOCAL_CFLAGS += -DUSE_SSLEAY
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../openssl/include
 endif
-ifeq ($(YPERWAVE_CONFIG_SSL),axtls)
+ifeq ($(CURL_CONFIG_SSL),axtls)
 LOCAL_CFLAGS += -DUSE_AXTLS
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/crypto
