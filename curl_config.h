@@ -1008,7 +1008,7 @@
 // #define USE_SSLEAY 1
 
 /* if you want POSIX threaded DNS lookup */
-/* #undef USE_THREADS_POSIX */
+#define USE_THREADS_POSIX 1
 
 /* Use TLS-SRP authentication */
 /* #undef USE_TLS_SRP */
