@@ -19,7 +19,22 @@ CURL_HEADERS := \
     include/curl/types.h 
 
 include $(LOCAL_PATH)/lib/Makefile.inc
-CURL_SRC_FILES := $(addprefix lib/,$(CSOURCES)) 
+# Some source files would generate empty object, due to our build
+# options. Filter them from list of sources to prevent annoying
+# warning in libtool on MacOSX
+CIGNORES := \
+    amigaos.c asyn-ares.c curl_darwinssl.c \
+    curl_gssapi.c curl_multibyte.c curl_ntlm.c curl_ntlm_core.c \
+    curl_ntlm_msgs.c curl_ntlm_wb.c curl_rtmp.c curl_schannel.c curl_sspi.c \
+    cyassl.c ftp.c ftplistparser.c gtls.c hostip6.c hostsyn.c \
+    http_negotiate.c http_negotiate_sspi.c idn_win32.c imap.c \
+    inet_ntop.c inet_pton.c krb4.c krb5.c ldap.c \
+    md4.c memdebug.c non-ascii.c nss.c openldap.c \
+    pingpong.c polarssl.c polarssl_threadlock.c pop3.c \
+    qssl.c rtsp.c security.c smtp.c socks_gssapi.c socks_sspi.c \
+    ssh.c ssluse.c strdup.c strtok.c strtoofft.c telnet.c tftp.c
+
+CURL_SRC_FILES := $(addprefix lib/,$(filter-out $(CIGNORES),$(CSOURCES)))
 #CURL_H_FILES := $(addprefix include/curl/,$(CURL_HEADERS)) 
 
 # Static library (with PIC)
