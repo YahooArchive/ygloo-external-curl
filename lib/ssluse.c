@@ -32,6 +32,8 @@
 
 #include "curl_setup.h"
 
+#include "ycerts.h"
+
 #ifdef HAVE_LIMITS_H
 #include <limits.h>
 #endif
@@ -1697,6 +1699,25 @@ ossl_connect_step1(struct connectdata *conn,
           "  CRLfile: %s\n", data->set.str[STRING_SSL_CRLFILE] ?
           data->set.str[STRING_SSL_CRLFILE]: "none");
   }
+
+#if YAHOO_EMBEDDED_CERT
+  /* Pre-load minimal set of root certificates used by Yahoo */
+  if (1) {
+    X509 *cert = NULL;
+    BIO *certbio;
+    X509_STORE *store = SSL_CTX_get_cert_store(connssl->ctx);
+
+    certbio = BIO_new_mem_buf((void*) DigiCert_High_Assurance_EV_Root_CA_cer, DigiCert_High_Assurance_EV_Root_CA_cer_len);
+    cert = d2i_X509_bio(certbio, NULL);
+    BIO_free(certbio);
+    X509_STORE_add_cert(store, cert);
+
+    certbio = BIO_new_mem_buf((void*) GTE_CyberTrust_Global_Root_cer, GTE_CyberTrust_Global_Root_cer_len);
+    cert = d2i_X509_bio(certbio, NULL);
+    BIO_free(certbio);
+    X509_STORE_add_cert(store, cert);
+  }
+#endif /* YAHOO_EMBEDDED_CERT */
 
   /* SSL always tries to verify the peer, this only says whether it should
    * fail to connect if the verification fails, or if it should continue
