@@ -972,7 +972,7 @@
 /* #undef USE_ARES */
 
 /* if axTLS is enabled */
-#define USE_AXTLS 1
+/* #define USE_AXTLS 1 */
 
 /* Define to disable non-blocking sockets. */
 /* #undef USE_BLOCKING_SOCKETS */
