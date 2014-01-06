@@ -19,20 +19,28 @@ CURL_HEADERS := \
     include/curl/types.h 
 
 include $(LOCAL_PATH)/lib/Makefile.inc
+
 # Some source files would generate empty object, due to our build
 # options. Filter them from list of sources to prevent annoying
 # warning in libtool on MacOSX
 CIGNORES := \
     amigaos.c asyn-ares.c curl_darwinssl.c \
-    curl_gssapi.c curl_multibyte.c curl_ntlm.c curl_ntlm_core.c \
-    curl_ntlm_msgs.c curl_ntlm_wb.c curl_rtmp.c curl_schannel.c curl_sspi.c \
+    curl_gssapi.c curl_multibyte.c curl_rtmp.c curl_schannel.c curl_sspi.c \
     cyassl.c ftp.c ftplistparser.c gtls.c hostip6.c hostsyn.c \
     http_negotiate.c http_negotiate_sspi.c idn_win32.c imap.c \
     inet_ntop.c inet_pton.c krb4.c krb5.c ldap.c \
     md4.c memdebug.c non-ascii.c nss.c openldap.c \
     pingpong.c polarssl.c polarssl_threadlock.c pop3.c \
     qssl.c rtsp.c security.c smtp.c socks_gssapi.c socks_sspi.c \
-    ssh.c ssluse.c strdup.c strtok.c strtoofft.c telnet.c tftp.c
+    ssh.c strdup.c strtok.c strtoofft.c telnet.c tftp.c
+
+ifneq ($(CURL_CONFIG_SSL),axtls)
+CIGNORES += axtls.c
+endif
+ifneq ($(CURL_CONFIG_SSL),openssl)
+CIGNORES += ssluse.c
+CIGNORES += curl_ntlm.c curl_ntlm_core.c curl_ntlm_msgs.c curl_ntlm_wb.c
+endif
 
 CURL_SRC_FILES := $(addprefix lib/,$(filter-out $(CIGNORES),$(CSOURCES)))
 #CURL_H_FILES := $(addprefix include/curl/,$(CURL_HEADERS)) 
@@ -61,11 +69,12 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/../zlib
 
 # SSL provider
 ifeq ($(CURL_CONFIG_SSL),openssl)
-LOCAL_CFLAGS += -DUSE_SSLEAY
+LOCAL_CFLAGS += -DUSE_SSLEAY=1 -DUSE_OPENSSL=1
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../openssl/include
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/yahoo_certs
 endif
 ifeq ($(CURL_CONFIG_SSL),axtls)
-LOCAL_CFLAGS += -DUSE_AXTLS
+LOCAL_CFLAGS += -DUSE_AXTLS=1
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/crypto
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/ssl
