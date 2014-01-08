@@ -7,9 +7,6 @@
 #undef HAVE_SYS_UIO_H
 #undef HAVE_TERMIO_H
 
-/* lib/curl_config.h.  Generated from curl_config.h.in by configure.  */
-/* lib/curl_config.h.in.  Generated from configure.ac by autoheader.  */
-
 /* when building libcurl itself */
 /* #undef BUILDING_LIBCURL */
 
@@ -89,7 +86,10 @@
 /* #undef EGD_SOCKET */
 
 /* Define if you want to enable IPv6 support */
-/* #undef ENABLE_IPV6 */
+#define ENABLE_IPV6 1
+
+/* Define to the type of arg 2 for gethostname. */
+#define GETHOSTNAME_TYPE_ARG2 size_t
 
 /* Define to the type qualifier of arg 1 for getnameinfo. */
 #define GETNAMEINFO_QUAL_ARG1 const
@@ -101,7 +101,11 @@
 #define GETNAMEINFO_TYPE_ARG2 socklen_t
 
 /* Define to the type of args 4 and 6 for getnameinfo. */
+#ifndef __APPLE__
 #define GETNAMEINFO_TYPE_ARG46 size_t
+#else
+#define GETNAMEINFO_TYPE_ARG46 socklen_t
+#endif
 
 /* Define to the type of arg 7 for getnameinfo. */
 #define GETNAMEINFO_TYPE_ARG7 int
@@ -204,6 +208,9 @@
 /* Define to 1 if you have the ftruncate function. */
 #define HAVE_FTRUNCATE 1
 
+/* Define to 1 if you have the gai_strerror function. */
+/* #undef HAVE_GAI_STRERROR */
+
 /* Define to 1 if you have a working getaddrinfo function. */
 #define HAVE_GETADDRINFO 1
 
@@ -232,7 +239,7 @@
 #define HAVE_GETHOSTBYNAME 1
 
 /* Define to 1 if you have the gethostbyname_r function. */
-#define HAVE_GETHOSTBYNAME_R 1
+/* #undef HAVE_GETHOSTBYNAME_R */
 
 /* gethostbyname_r() takes 3 args */
 /* #undef HAVE_GETHOSTBYNAME_R_3 */
@@ -241,7 +248,7 @@
 /* #undef HAVE_GETHOSTBYNAME_R_5 */
 
 /* gethostbyname_r() takes 6 args */
-#define HAVE_GETHOSTBYNAME_R_6 1
+/* #undef HAVE_GETHOSTBYNAME_R_6 */
 
 /* Define to 1 if you have the gethostname function. */
 #define HAVE_GETHOSTNAME 1
@@ -479,6 +486,9 @@
 /* Define to 1 if you have the <net/if.h> header file. */
 #define HAVE_NET_IF_H 1
 
+/* Define to 1 if you have the <nghttp2/nghttp2.h> header file. */
+/* #undef HAVE_NGHTTP2_NGHTTP2_H */
+
 /* Define to 1 if NI_WITHSCOPEID exists and works. */
 /* #undef HAVE_NI_WITHSCOPEID */
 
@@ -552,9 +562,6 @@
 /* Define to 1 if you have the recv function. */
 #define HAVE_RECV 1
 
-/* Define to 1 if you have the recvfrom function. */
-#define HAVE_RECVFROM 1
-
 /* Define to 1 if you have the <rsa.h> header file. */
 /* #undef HAVE_RSA_H */
 
@@ -616,6 +623,9 @@
 /* Define to 1 if you have the socket function. */
 #define HAVE_SOCKET 1
 
+/* Define to 1 if you have the socketpair function. */
+#define HAVE_SOCKETPAIR 1
+
 /* Define to 1 if you have the <socket.h> header file. */
 /* #undef HAVE_SOCKET_H */
 
@@ -624,6 +634,9 @@
 
 /* if you have the function SRP_Calc_client_key */
 /* #undef HAVE_SSLEAY_SRP */
+
+/* Define to 1 if you have the `SSLv2_client_method' function. */
+/* #unddef HAVE_SSLV2_CLIENT_METHOD */
 
 /* Define to 1 if you have the `SSL_get_shutdown' function. */
 #define HAVE_SSL_GET_SHUTDOWN 1
@@ -646,9 +659,6 @@
 /* Define to 1 if you have the strcasecmp function. */
 #define HAVE_STRCASECMP 1
 
-/* Define to 1 if you have the strcasestr function. */
-#define HAVE_STRCASESTR 1
-
 /* Define to 1 if you have the strcmpi function. */
 /* #undef HAVE_STRCMPI */
 
@@ -666,12 +676,6 @@
 
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
-
-/* Define to 1 if you have the strlcat function. */
-/* undef HAVE_STRLCAT */
-
-/* Define to 1 if you have the `strlcpy' function. */
-/* #undef HAVE_STRLCPY */
 
 /* Define to 1 if you have the strncasecmp function. */
 #define HAVE_STRNCASECMP 1
@@ -740,10 +744,13 @@
 #define HAVE_SYS_UN_H 1
 
 /* Define to 1 if you have the <sys/utime.h> header file. */
-#define HAVE_SYS_UTIME_H 1
+/* #undef HAVE_SYS_UTIME_H */
+
+/* Define to 1 if you have the <sys/wait.h> header file. */
+#define HAVE_SYS_WAIT_H 1
 
 /* Define to 1 if you have the <sys/xattr.h> header file. */
-/* #undef HAVE_SYS_XATTR_H */
+#define HAVE_SYS_XATTR_H 1
 
 /* Define to 1 if you have the <termios.h> header file. */
 #define HAVE_TERMIOS_H 1
@@ -897,7 +904,11 @@
 #define RECV_TYPE_ARG3 size_t
 
 /* Define to the type of arg 4 for recv. */
+#if defined(__BIONIC__)
 #define RECV_TYPE_ARG4 unsigned int
+#else
+#define RECV_TYPE_ARG4 int
+#endif
 
 /* Define to the function return type for recv. */
 #define RECV_TYPE_RETV ssize_t
@@ -933,7 +944,11 @@
 #define SEND_TYPE_ARG3 size_t
 
 /* Define to the type of arg 4 for send. */
+#if defined(__BIONIC__)
 #define SEND_TYPE_ARG4 unsigned int
+#else
+#define SEND_TYPE_ARG4 int
+#endif
 
 /* Define to the function return type for send. */
 #define SEND_TYPE_RETV ssize_t
@@ -941,8 +956,27 @@
 /* The size of `int', as computed by sizeof. */
 #define SIZEOF_INT 4
 
+#if defined(__x86_64__) || defined(__aarch64__)
 /* The size of `long', as computed by sizeof. */
-#define SIZEOF_LONG 4
+#define SIZEOF_LONG 8
+
+/* The size of `off_t', as computed by sizeof. */
+#define SIZEOF_OFF_T 8
+
+/* The size of `short', as computed by sizeof. */
+#define SIZEOF_SHORT 2
+
+/* The size of `size_t', as computed by sizeof. */
+#define SIZEOF_SIZE_T 8
+
+/* The size of `time_t', as computed by sizeof. */
+#define SIZEOF_TIME_T 8
+
+/* The size of `void*', as computed by sizeof. */
+#define SIZEOF_VOIDP 8
+#else
+/* The size of `long', as computed by sizeof. */
+#define SIZEOF_LONG 8
 
 /* The size of `off_t', as computed by sizeof. */
 #define SIZEOF_OFF_T 4
@@ -958,6 +992,7 @@
 
 /* The size of `void*', as computed by sizeof. */
 #define SIZEOF_VOIDP 4
+#endif
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -1028,7 +1063,7 @@
 /* #undef USE_YASSLEMUL */
 
 /* Version number of package */
-#define VERSION "7.30.0"
+#define VERSION "7.34.0"
 
 /* Define to avoid automatic inclusion of winsock.h */
 /* #undef WIN32_LEAN_AND_MEAN */
