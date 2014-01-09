@@ -84,9 +84,6 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/ssl
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../axtls/config
 endif
 
-ifneq ($(NDK_ROOT),)
-LOCAL_LDLIBS += -fuse-ld=gold 
-endif
 include $(BUILD_STATIC_LIBRARY)
 
 ######## 
@@ -95,4 +92,7 @@ include $(BUILD_STATIC_LIBRARY)
 # LOCAL_SRC_FILES := curljni.c 
 # LOCAL_STATIC_LIBRARIES := libcurl 
 # LOCAL_C_INCLUDES += $(LOCAL_PATH)/curl/include 
+# ifneq ($(NDK_ROOT),)
+# LOCAL_LDLIBS += -fuse-ld=gold
+# endif
 # include $(BUILD_SHARED_LIBRARY) 
